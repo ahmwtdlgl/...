@@ -13,11 +13,11 @@ cap.set(4, 480)
 screen_width, screen_height = pyautogui.size()
 prev_x, prev_y = 0, 0
 smooth_factor = 5
-clicking = False  # Tıklama durumu
+clicking = False  
 
-# Ekran köşelerine rahat ulaşmak için ölçek
-scale_x = 1.2 # X ekseni hassasiyeti
-scale_y = 1.2  # Y ekseni hassasiyeti
+
+scale_x = 1.2 
+scale_y = 1.2  
 
 with mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7) as hands:
     while True:
@@ -38,15 +38,15 @@ with mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7) as hands:
             y = hand_landmarks.landmark[8].y
             thumb_y = hand_landmarks.landmark[4].y
 
-            # Ekran koordinatlarını ölçekle
+           
             screen_x = int(x * screen_width * scale_x)
             screen_y = int(y * screen_height * scale_y)
 
-            # Ekran dışına taşmayı engelle
+           
             screen_x = max(0, min(screen_x, screen_width - 1))
             screen_y = max(0, min(screen_y, screen_height - 1))
 
-            # Smooth hareket
+           
             smooth_factor = 3
             smooth_x = prev_x + (screen_x - prev_x) / smooth_factor
             smooth_y = prev_y + (screen_y - prev_y) / smooth_factor
@@ -56,7 +56,7 @@ with mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7) as hands:
 
             prev_x, prev_y = smooth_x, smooth_y
 
-            # Tıklama kontrolü (işaret parmağı ve başparmak ucu yakınsa bas)
+           
             distance = abs(hand_landmarks.landmark[8].y - hand_landmarks.landmark[4].y)
             if distance < 0.05 and not clicking:
                 pyautogui.mouseDown()
@@ -73,3 +73,4 @@ with mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7) as hands:
 
 cap.release()
 cv2.destroyAllWindows()
+
